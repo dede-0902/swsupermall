@@ -1,12 +1,18 @@
 <template>
   <div id="home">
     <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
-    <scroll ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore">
-      <home-swiper :banners="banners" />
-      <recommend-view :recommends="recommends" />
-      <feature-view />
-      <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick"/>
-      <goods-list :goods="showGoods" />
+    <tab-control :titles="['流行','新款','精选']" 
+      @tabClick="tabClick" ref="tabControl1" 
+      class="fixed" v-show="isTabFixed"
+    />
+    <scroll ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore" class="content">
+      <div>
+        <home-swiper :banners="banners" @swiperImageLoad="swiperImageLoad"/>
+        <recommend-view :recommends="recommends" />
+        <feature-view />
+        <tab-control :titles="['流行','新款','精选']" @tabClick="tabClick" ref="tabControl2" />
+        <goods-list :goods="showGoods" />
+      </div>
     </scroll>
     <back-top @click.native="backClick" v-show="isShowBackTop" />
   </div>
@@ -23,6 +29,8 @@
   import FeatureView from './childComps/FeatureView'
 
   import {getHomeMultidata,getHomeGoods} from 'network/home'
+
+  import {debounce} from 'common/utils'
   export default {
     name: "Home",
     components: {
@@ -46,7 +54,10 @@
           'sell': {page: 0,list:[]},
         },
         currentType: 'pop',
-        isShowBackTop: false
+        isShowBackTop: false,
+        tabOffsetTop: 0,
+        isTabFixed: false,
+        saveY: 0
       }
     },
     created() {
@@ -84,22 +95,41 @@
           case 2:
             this.currentType = 'sell'     
         }
+        this.$refs.tabControl1.currentIndex = index
+        this.$refs.tabControl2.currentIndex = index
       },
       backClick() {
         this.$refs.scroll.scrollTo(0,0,500)
       },
       contentScroll(position){
         this.isShowBackTop = (-position.y) > 600
+        this.isTabFixed = (-position.y) > this.tabOffsetTop
       },
       loadMore() {
         this.$refs.scroll.refresh()
         this.getHomeGoods(this.currentType)
+      },
+      swiperImageLoad() {
+        this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
       }
     },
     computed: {
       showGoods() {
         return this.goods[this.currentType].list
       }
+    },
+    mounted() {
+      const refresh = debounce(this.$refs.scroll.refresh,500)
+      this.$bus.$on('itemImageLoad',() => {
+        refresh()
+      })
+    },
+    activated() {
+      this.$refs.scroll.scrollTo(0,this.saveY,0)
+      this.$refs.scroll.refresh()
+    },
+    deactivated() {
+      this.saveY = this.$refs.scroll.getScrollY()
     },
   }
 </script>
@@ -111,16 +141,20 @@
   .home-nav {
     background-color: var(--color-tint);
     color: #fff;
-    position: fixed;
-    top: 0;
+  }
+  .content {
+    position: absolute;
+    top: 44px;
+    bottom: 49px;
     left: 0;
     right: 0;
+  }
+  .fixed {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 44px;
     z-index: 9;
   }
-  /* .content{
-    height: calc(100%-98px);
-    overflow-y: scroll;
-    overflow: hidden;
-  } */
   
 </style>

@@ -1,8 +1,6 @@
 <template>
   <div class="wrapper" ref="wrapper">
-    <div class="content">
       <slot></slot>
-    </div>
   </div>
 </template>
 <script>
@@ -40,13 +38,15 @@ export default {
       this.scroll.on('scroll',(position) => {
         this.$emit('scroll',position)
       })
-      this.scroll.on('pullingUp',() => {
-        console.log("上啦加载中")
-        this.$emit('pullingUp')
-      })
+      if(this.pullUpLoad){
+        this.scroll.on('pullingUp',() => {
+          console.log("上啦加载中")
+          this.$emit('pullingUp')
+        })
+      }
     },
     scrollTo(x,y,time){
-      this.scroll.scrollTo(x,y,time)
+      this.scroll && this.scroll.scrollTo(x,y,time)
     },
     refresh() {
       this.scroll && this.scroll.refresh && this.scroll.refresh()
@@ -54,16 +54,11 @@ export default {
     finishPullUp() {
 		  this.scroll && this.scroll.finishPullUp && this.scroll.finishPullUp()
     },
+    getScrollY() {
+      this.scroll ? this.scroll.getScrollY : 0
+    }
   },
 }
 </script>
 <style scoped>
-  .content {
-    height:calc(100%-98px);
-    position: absolute;
-    top: 44px;
-    bottom: 49px;
-    left: 0;
-    right: 0;
-  }
 </style>
