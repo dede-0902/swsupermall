@@ -1,9 +1,9 @@
 <template>
   <div id="home">
-    <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar>
+    <nav-bar class="home-nav"><div slot="center">购物街</div></nav-bar> 
     <tab-control :titles="['流行','新款','精选']" 
       @tabClick="tabClick" ref="tabControl1" 
-      class="fixed" v-show="isTabFixed"
+      class="fixed" v-show="isTabFixed" 
     />
     <scroll ref="scroll" :probe-type="3" @scroll="contentScroll" :pull-up-load="true" @pullingUp="loadMore" class="content">
       <div>

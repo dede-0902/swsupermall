@@ -1,14 +1,14 @@
 <template>
-  <div>
-    <nav-bar>
-      <div slot="left" class="left">
-        <img src="~assets/img/common/back.svg" alt="">
-      </div>
+    <nav-bar class="detail-nav-bar">
+        <img src="~assets/img/common/back.svg" alt="" slot="left" class="left" @click="back">
       <div slot="center" class="center">
-        <span v-for="(item,index) in titles" :key="index">{{item}}</span>
+        <span v-for="(item,index) in titles" 
+          :key="index" class="center-item" 
+          :class="{active:index===currentIndex}"
+          @click="currentIndex=index">{{item}}
+        </span>
       </div>
     </nav-bar>
-  </div>
 </template>
 <script>
 import NavBar from 'components/common/navbar/NavBar'
@@ -19,19 +19,34 @@ export default {
   },
   data() {
     return {
-      titles: ['商品','参数','评论','推荐']
+      titles: ['商品','参数','评论','推荐'],
+      currentIndex: 0
     }
   },
+  methods: {
+    back() {
+      this.$router.back()
+    }
+  }
 }
 </script>
 <style scoped>
+  .detail-nav-bar {
+    background-color: #fff;
+  }
   .left {
-    width: 60px;
-    height: 44px;
-    padding-top: 6px;
+    height: 22px;
+    margin-top:10px;
   }
   .center {
-    background-color: red;
-    width: calc(100% - 120);
+    display: flex;
+    font-size: 13px;
+    padding: 0 20px;
+  }
+  .center-item {
+    flex: 1;
+  }
+  .active {
+    color: var(--color-tint)
   }
 </style>

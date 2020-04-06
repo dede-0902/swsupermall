@@ -24,7 +24,11 @@ export default {
       this.$bus.$emit('itemImageLoad')
     },
     itemClick() {
-      this.$router.push('/detail/' + this.goodsItem.iid)
+      const iid = this.goodsItem.iid
+      this.$router.push({
+        path: '/detail',
+        query: {iid}
+      })
     }
   },
 }
