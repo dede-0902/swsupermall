@@ -38,9 +38,8 @@ export default {
       this.scroll.on('scroll',(position) => {
         this.$emit('scroll',position)
       })
-      if(this.pullUpLoad){
+      if(this.pullUpLoad){ 
         this.scroll.on('pullingUp',() => {
-          console.log("上啦加载中")
           this.$emit('pullingUp')
         })
       }

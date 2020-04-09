@@ -6,9 +6,13 @@
 <script>
 import GoodsListItem from './GoodsListItem'
 export default {
-  name: 'GoodsList',
-  props: {
+  name: 'GoodsList', 
+  props: { 
     goods: {
+      type: Array,
+      default() {
+        return []
+      }
     }
   },
   components: {

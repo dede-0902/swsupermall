@@ -5,7 +5,7 @@
         <span v-for="(item,index) in titles" 
           :key="index" class="center-item" 
           :class="{active:index===currentIndex}"
-          @click="currentIndex=index">{{item}}
+          @click="tabItemClick(index)">{{item}}
         </span>
       </div>
     </nav-bar>
@@ -25,7 +25,11 @@ export default {
   },
   methods: {
     back() {
-      this.$router.back()
+      this.$router.go(-1)
+    },
+    tabItemClick(index) {
+      this.currentIndex=index
+      this.$emit('tabItemClick',index)
     }
   }
 }

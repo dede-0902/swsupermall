@@ -115,7 +115,7 @@
     },
     computed: {
       showGoods() {
-        return this.goods[this.currentType].list
+        return this.goods[this.currentType].list 
       }
     },
     mounted() {

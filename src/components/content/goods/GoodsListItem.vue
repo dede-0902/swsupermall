@@ -1,12 +1,12 @@
 <template>
-  <div class="goods-list-item" @click="itemClick">
-    <img :src="goodsItem.show.img" alt="" @load="itemImageLoad">
+  <div class="goods-list-item" @click="itemClick" v-if="Object.keys(goodsItem).length!==0">
+    <img :src="goodsItem.image||goodsItem.show.img" alt="" @load="itemImageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">￥{{goodsItem.price}}</span>
       <span class="collect">{{goodsItem.cfav}}</span>
     </div>
-  </div>
+  </div> 
 </template>
 <script>
 export default {
@@ -17,14 +17,14 @@ export default {
       default() {
         return {}
       }
-    },
-  },
+    }, 
+  }, 
   methods: {
     itemImageLoad() {
       this.$bus.$emit('itemImageLoad')
     },
     itemClick() {
-      const iid = this.goodsItem.iid
+      let iid = this.goodsItem.iid
       this.$router.push({
         path: '/detail',
         query: {iid}

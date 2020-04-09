@@ -7,7 +7,7 @@
     <div class="shop-middle">
       <div class="shop-middle-left shop-middle-item">
         <div class="sold-number">
-          <div class="sell-count">{{shop.sells}}</div>
+          <div class="sell-count">{{shop.sells | sellCount}}</div>
           <div class="sell-text">总销量</div>
         </div>
         <div class="all-baby">
@@ -36,6 +36,11 @@ export default {
   props: {
     shop: {
       type: Object
+    }
+  },
+  filters: {
+    sellCount(value) {
+      return value > 10000 ? (value/10000).toFixed(1)+'万' : value
     }
   }
 }
