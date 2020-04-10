@@ -14,3 +14,15 @@
       this.$bus.$on('itemImgLoad',this.itemImgListener)
     }
   }
+  export const backTopListener = {
+    data() {
+      return {
+        isShowBackTop: false
+      }
+    },
+    methods: {
+      backClick() {
+        this.$refs.scroll.scrollTo(0,0,500)
+      },
+    },
+  }

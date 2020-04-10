@@ -12,13 +12,15 @@
         <detail-recommend-info :recommendList="recommendList" ref="recommendList" />
       </div>
     </scroll>
-    <detail-bottom-bar />
+    <back-top v-show="isShowBackTop" @click.native="backClick" />
+    <detail-bottom-bar @addCart="addCart" />
   </div>
 </template>
 <script>
 import {getDetaildata, Goods, Shop, GoodsParam, getRecommend} from 'network/detail'
 
 import Scroll from 'components/common/scroll/Scroll'
+import BackTop from 'components/content/backtop/BackTop'
 
 import DetailNavBar from './childComps/DetailNavBar'
 import DetailSwiper from './childComps/DetailSwiper'
@@ -31,7 +33,7 @@ import DetailRecommendInfo from './childComps/DetailRecommendInfo'
 import DetailBottomBar from './childComps/DetailBottomBar'
 
 import {debounce} from 'common/utils'
-import {itemListenerMixin} from 'common/mixin'
+import {itemListenerMixin, backTopListener} from 'common/mixin'
 export default {
   name: 'Detail',
   components: {
@@ -41,6 +43,7 @@ export default {
     GoodsParam,
 
     Scroll,
+    BackTop,
 
     DetailNavBar,
     DetailSwiper,
@@ -52,7 +55,7 @@ export default {
     DetailRecommendInfo,
     DetailBottomBar
   },
-  mixins:[itemListenerMixin],
+  mixins:[itemListenerMixin, backTopListener],
   data() {
     return {
       iid: null,
@@ -104,19 +107,16 @@ export default {
         this.recommendList = res.data.list
       })
     },
-    getOffsetTops() {
-      this.topPosition = []
-      this.topPosition.push(0)
-      this.topPosition.push(this.$refs.paramInfo.$el.offsetTop)
-      this.topPosition.push(this.$refs.commentInfo.$el.offsetTop)
-      this.topPosition.push(this.$refs.recommendList.$el.offsetTop)
-      this.topPosition.push(Number.MAX_VALUE)
-    },
     contentScroll(position) {
       for(let i in this.topPosition){
         if((-position.y) > this.topPosition[i] && (-position.y) < this.topPosition[parseInt(i)+1]) {
           this.$refs.detailNavBar.currentIndex = parseInt(i)
         }
+      }
+      if(-position.y > 1000) {
+        this.isShowBackTop = true
+      }else{
+        this.isShowBackTop = false
       }
     },
     tabItemClick(index) {
@@ -125,6 +125,24 @@ export default {
     itemImgLoad() {
       this.newRefresh()
       this.getOffsetTops()
+    },
+    getOffsetTops() {
+      this.topPosition = []
+      this.topPosition.push(0)
+      this.topPosition.push(this.$refs.paramInfo.$el.offsetTop)
+      this.topPosition.push(this.$refs.commentInfo.$el.offsetTop)
+      this.topPosition.push(this.$refs.recommendList.$el.offsetTop)
+      this.topPosition.push(Number.MAX_VALUE)
+    },
+    addCart() {
+      const obj = {}
+      obj.iid = this.iid;
+      obj.imgURL = this.topImages[0]
+      obj.title = this.goods.title
+      obj.desc = this.goods.desc
+      obj.newPrice = this.goods.nowPrice
+      obj.isChecked = true
+      this.$store.dispatch('addCart', obj)
     }
   },
 }

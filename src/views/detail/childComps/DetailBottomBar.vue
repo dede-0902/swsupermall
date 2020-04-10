@@ -10,9 +10,9 @@
     </div>
     <div class="item">
       <i class="icon select"></i>
-      <span>收藏</span>
+      <span>收藏</span> 
     </div>
-    <div class="cart">
+    <div class="cart" @click="addCart">
       <i></i>
       <span>加入购物车</span>
     </div>
@@ -24,7 +24,12 @@
 </template>
 <script>
 export default {
-  name: 'DetailBottomBar'
+  name: 'DetailBottomBar',
+  methods: {
+    addCart() {
+      this.$emit('addCart')
+    }
+  },
 }
 </script>
 <style scoped>

@@ -9,7 +9,7 @@
 export default {
   name: 'NavBar'
 }
-</script>
+</script> 
 <style scoped>
   .nav-bar {
     position: relative;
