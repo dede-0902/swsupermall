@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div :class="isChecked ? 'icon-selected' : 'icon-noselected'" class="icon" @click="tickClick">
+    <div :class="isChecked ? 'icon-selected' : 'icon-noselected'" class="icon">
       <img src="~/assets/img/cart/tick.svg" alt="">
     </div>
   </div>
@@ -10,12 +10,7 @@ export default {
   name:'CheckButton',
   props: {
     isChecked: true
-  },
-  methods: {
-    tickClick() {
-      this.$emit('tickClick')
-    }
-  },
+  }
 }
 </script>
 <style scoped>

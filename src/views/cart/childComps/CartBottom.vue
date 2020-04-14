@@ -1,14 +1,14 @@
 <template>
   <div class="cart-bottom">
     <div class="bottom-icon">
-      <check-button @tickClick="tickClick" :isChecked="isChecked" />
+      <check-button @click.native="tickClick" :isChecked="isSelectAll" />
     </div>
     <div class="span">
       <span class="all-ckecked">全选</span>
       <span class="total-money">合计：¥{{totalMoney}}元</span>
     </div>
-    <div class="calcu">
-      去计算(1)
+    <div class="calcu" @click="calcu">
+      去计算({{this.cartList.length}})
     </div>
   </div>
 </template>
@@ -21,27 +21,22 @@ export default {
   components: {
     CheckButton
   },
-  data() {
-    return {
-      isChecked: true,
-      isSelectAll: true
-    }
-  },
   methods: {
     tickClick() {
-      let isSelectAll = this.$store.state.cartList.find(item => !item.isChecked)
-      if(isSelectAll) {
-        this.isChecked = true
-      }else{
-        this.isChecked = false
-      }
       this.$store.commit('allChecked')
+    },
+    calcu() {
+      if(this.cartList == 0){
+        this.$toast.show('请添加商品到购物车中')
+      }
     }
   },
   computed: {
-    ...mapGetters(['totalMoney']),
-  },
-  activated() {
+    ...mapGetters(['totalMoney','cartList']),
+    isSelectAll() {
+      if(this.cartList.length == 0) return false
+      return !this.cartList.find(item => !item.isChecked)
+    }
   },
 }
 </script>

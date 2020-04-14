@@ -4,14 +4,19 @@ const mutations = {
     payLoad.count += 1
   },
   [ADD_ITEM](state, payLoad) {
+    payLoad.isChecked = true
     state.cartList.push(payLoad)
   },
-  [ALL_CHECKED](state) {
+  [ALL_CHECKED](state, payLoad) {
     let isSelectAll = state.cartList.find(item => !item.isChecked)
     if(isSelectAll) {
-      state.cartList.forEach(item => {item.isChecked = true}) 
-    }else {
-      state.cartList.forEach(item => {item.isChecked = false}) 
+      state.cartList.forEach(item => {
+        item.isChecked = true
+      });
+    }else{
+      state.cartList.forEach(item => {
+        item.isChecked = false
+      });
     }
   }
 }

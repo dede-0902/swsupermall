@@ -1,12 +1,14 @@
 <template>
-  <div class="goods">
-    <goods-list-item v-for="(item,index) in goods" :key="index" :goodsItem="item"/>
+  <div class="goods" v-if="goods!==undefined">
+    <slot name="other">
+      <goods-list-item v-for="(item,index) in goods" :key="index" :goodsItem="item"/>
+    </slot>
   </div>
-</template>
+</template> 
 <script>
 import GoodsListItem from './GoodsListItem'
 export default {
-  name: 'GoodsList', 
+  name: 'GoodsList',  
   props: { 
     goods: {
       type: Array,

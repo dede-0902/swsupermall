@@ -1,7 +1,7 @@
 <template>
   <div class="item-cart">
     <div class="check-button"> 
-      <check-button @tickClick="tickClick" :isChecked="isChecked" />
+      <check-button @click.native="tickClick" :isChecked="isChecked" />
     </div>
     <div class="item-img">
       <img :src="cartItem.imgURL" alt="商品图片"> 

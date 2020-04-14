@@ -1,6 +1,6 @@
 <template>
   <div class="goods-list-item" @click="itemClick" v-if="Object.keys(goodsItem).length!==0">
-    <img :src="goodsItem.image||goodsItem.show.img" alt="" @load="itemImageLoad">
+    <img :src="goodsItem.img||goodsItem.image||goodsItem.show.img" alt="" @load="itemImageLoad">
     <div class="goods-info">
       <p>{{goodsItem.title}}</p>
       <span class="price">￥{{goodsItem.price}}</span>

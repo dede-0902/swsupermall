@@ -17,6 +17,8 @@
   </div>
 </template>
 <script>
+import {mapActions} from 'vuex'
+
 import {getDetaildata, Goods, Shop, GoodsParam, getRecommend} from 'network/detail'
 
 import Scroll from 'components/common/scroll/Scroll'
@@ -80,6 +82,7 @@ export default {
     })
   },
   methods: {
+    ...mapActions(['addToCart']),
     _getDetaildata() {
       const iid = this.$route.query.iid
       this.iid = iid
@@ -142,7 +145,10 @@ export default {
       obj.desc = this.goods.desc
       obj.newPrice = this.goods.nowPrice
       obj.isChecked = true
-      this.$store.dispatch('addCart', obj)
+      // this.$store.dispatch('addCart', obj)
+      this.addToCart(obj).then(res => {
+        this.$toast.show('添加成功')
+      })
     }
   },
 }

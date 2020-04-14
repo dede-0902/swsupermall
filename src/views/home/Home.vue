@@ -30,8 +30,7 @@
 
   import {getHomeMultidata,getHomeGoods} from 'network/home'
 
-  import {debounce} from 'common/utils'
-  import {backTopListener} from 'common/mixin'
+  import {backTopListener, itemListenerMixin} from 'common/mixin'
   export default {
     name: "Home",
     components: {
@@ -45,7 +44,7 @@
       RecommendView,
       FeatureView
     },
-    mixins: [backTopListener],
+    mixins: [backTopListener,itemListenerMixin],
     data() {
       return {
         banners: [],
@@ -105,7 +104,7 @@
       },
       loadMore() {
         this.$refs.scroll.refresh()
-        this.getHomeGoods(this.currentType)
+        this.getHomeGoods(this.currentType) 
       },
       swiperImageLoad() {
         this.tabOffsetTop = this.$refs.tabControl2.$el.offsetTop
@@ -113,14 +112,8 @@
     },
     computed: {
       showGoods() {
-        return this.goods[this.currentType].list 
-      }
-    },
-    mounted() {
-      const refresh = debounce(this.$refs.scroll.refresh,500)
-      this.$bus.$on('itemImageLoad',() => {
-        refresh()
-      })
+        return this.goods[this.currentType].list  
+      } 
     },
     activated() {
       this.$refs.scroll.scrollTo(0,this.saveY,0)
